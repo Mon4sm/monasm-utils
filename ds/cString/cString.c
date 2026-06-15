@@ -9,7 +9,7 @@ cString *cstring_init(const char *str){
     cString *obj = malloc(sizeof(cString));
     if(UNLIKELY(!obj)) return NULL;
     obj->len = strlen(str);
-    obj->cap = obj->len + 1;
+    obj->cap = obj->len + 1 < 16 ? 16 : obj->len + 1;
     obj->data = malloc(obj->cap);
     if(UNLIKELY(!obj->data)){
         free(obj);
@@ -48,7 +48,10 @@ void cstring_push_back(cString *restrict obj, const char *restrict str) {
     if(UNLIKELY(str_len > SIZE_MAX - obj->len - 1)) return;
     size_t target_cap = obj->len + str_len + 1;
     if(UNLIKELY(target_cap > obj->cap)){
-        size_t new_cap = obj->cap < 16 ? 16 : obj->cap << 1; 
+        size_t new_cap = obj->cap < 16 ? 16 : obj->cap;
+        if(new_cap <= SIZE_MAX / 2){
+            new_cap <<= 1;
+        }
         if(new_cap < target_cap){
             new_cap = target_cap;
         }
