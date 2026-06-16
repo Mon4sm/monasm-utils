@@ -123,4 +123,21 @@ char cstring_at(const cString *obj, size_t idx);
 
 void cstring_push_back(cString *restrict obj, const char *restrict str);
 
+/**
+ * @brief Appends a char array to the front of a cString object.
+ *
+ * @param obj  The cString to append to. Must not be NULL.
+ * @param str  The string to append. Must not be NULL.
+ *
+ * @note Silently returns on NULL input or empty string.
+ * @note Capacity is doubled when exceeded, with a minimum of 16 bytes.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri");
+ *   cstring_push_front(s, "Cap ");
+ *   // s->data == "Cap Oguri"
+ */
+
+void cstring_push_front(cString *restrict obj, const char *restrict str);
+
 #endif
