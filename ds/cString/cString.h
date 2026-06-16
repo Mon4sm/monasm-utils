@@ -92,6 +92,42 @@ FORCE_INLINE static size_t cstring_size(const cString *obj){
 }
 
 /**
+ * @brief Getter for the beginning pointer.
+ *
+ * @param obj  The cString. Must not be NULL.
+ *
+ * @note Returns NULL on NULL input.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri");
+ *   char *x = cstring_begin(s);
+ *   // x == s->data
+ */
+
+FORCE_INLINE static char *cstring_begin(cString *obj){
+    if(UNLIKELY(!obj)) return NULL;
+    return obj->data;
+}
+
+/**
+ * @brief Getter for the ending pointer.
+ *
+ * @param obj  The cString. Must not be NULL.
+ *
+ * @note Returns NULL on NULL input.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri");
+ *   char *x = cstring_end(s);
+ *   // x == s->data + s->len ('\0')
+ */
+
+FORCE_INLINE static char *cstring_end(cString *obj){
+    if(UNLIKELY(!obj)) return NULL;
+    return obj->data + obj->len;
+}
+
+/**
  * @brief Getter for cString->data[index].
  *
  * @param obj  The cString. Must not be NULL.
