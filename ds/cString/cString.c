@@ -156,3 +156,12 @@ char *cstring_erase(cString *obj, size_t idx, size_t n){
         return obj->data + idx;
     }
 }
+
+int cstring_compare(const cString *restrict a, const cString *restrict b){
+    return strcmp(a->data, b->data);
+}
+
+int cstring_equals(const cString *restrict a, const cString *restrict b){
+    if(UNLIKELY(!a || !b)) return 0;
+    return a->len == b->len && !strcmp(a->data, b->data);
+}

@@ -287,4 +287,36 @@ void cstring_pop_front(cString *obj, size_t n);
 
 char *cstring_erase(cString *obj, size_t idx, size_t n);
 
+/**
+ * @brief Compares two cString objects lexicographically.
+ *
+ * @param a  First cString. Must not be NULL.
+ * @param b  Second cString. Must not be NULL.
+ *
+ * @note NULL input(s) are undefined.
+ *
+ * @example
+ *   cString *a = cstring_init("Oguri");
+ *   cString *b = cstring_init("Cap");
+ *   // cstring_compare(a, b) > 0
+ */
+
+int cstring_compare(const cString *restrict a, const cString *restrict b);
+
+/**
+ * @brief Checks if two cString objects are equal.
+ *
+ * @param a  First cString. Must not be NULL.
+ * @param b  Second cString. Must not be NULL.
+ *
+ * @note Returns 0 on NULL input.
+ *
+ * @example
+ *   cString *a = cstring_init("Oguri");
+ *   cString *b = cstring_init("Oguri");
+ *   // cstring_equals(a, b) == 1
+ */
+
+int cstring_equals(const cString *restrict a, const cString *restrict b);
+
 #endif
