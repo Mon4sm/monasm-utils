@@ -128,6 +128,23 @@ FORCE_INLINE static char *cstring_end(cString *obj){
 }
 
 /**
+ * @brief Getter for is_empty.
+ *
+ * @param obj  The cString. Must not be NULL.
+ *
+ * @note Returns -1 on NULL input.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri");
+ *   // cstring_empty(s) == 0
+ */
+
+FORCE_INLINE static int cstring_empty(cString *obj){
+    if(UNLIKELY(!obj)) return -1;
+    return obj->len == 0 ? 1 : 0;
+}
+
+/**
  * @brief Getter for cString->data[index].
  *
  * @param obj  The cString. Must not be NULL.
