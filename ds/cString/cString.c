@@ -20,6 +20,34 @@ cString *cstring_init(const char *str){
     return obj;
 }
 
+void cstring_copy(cString *restrict dst, const cString *restrict src){
+    if(UNLIKELY(!dst || !src)) return;
+    char *new_data = malloc(src->cap);
+    if(UNLIKELY(!new_data)) return;
+    free(dst->data);
+    dst->len = src->len;
+    dst->cap = src->cap;
+    dst->data = new_data;
+    memcpy(dst->data, src->data, dst->len);
+    dst->data[dst->len] = '\0';
+}
+
+cString *cstring_clone(const cString *src){
+    if(UNLIKELY(!src)) return NULL;
+    cString *obj = malloc(sizeof(cString));
+    if(UNLIKELY(!obj)) return NULL;
+    obj->len = src->len;
+    obj->cap = src->cap;
+    obj->data = malloc(obj->cap);
+    if(UNLIKELY(!obj->data)){
+        free(obj);
+        return NULL;
+    }
+    memcpy(obj->data, src->data, obj->len);
+    obj->data[obj->len] = '\0';
+    return obj;
+}
+
 void cstring_free(cString *obj){
     if(UNLIKELY(!obj)) return;
     free(obj->data);

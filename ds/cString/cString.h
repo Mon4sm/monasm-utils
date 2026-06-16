@@ -58,6 +58,37 @@ typedef struct cString {
 cString *cstring_init(const char *str);
 
 /**
+ * @brief cString deep copy.
+ *
+ * @param dst  Destination cString to copy to. Must not be NULL
+ * @param src  Target cString to copy from. Must not be NULL.
+ *
+ * @note Silently returns on NULL input.
+ *
+ * @example
+ *   cString *s1 = cstring_init("Oguri"), *s2 = cstring_init("");
+ *   cstring_copy(s2, s1);
+ *   // s1 == s2
+ */
+
+void cstring_copy(cString *restrict dst, const cString *restrict src);
+
+/**
+ * @brief cString deep clone.
+ *
+ * @param src  Target cString to clone from. Must not be NULL.
+ *
+ * @note Returns NULL on NULL input.
+ *
+ * @example
+ *   cString *s1 = cstring_init("Oguri");
+ *   cString *s2 = cstring_clone(s1);
+ *   // s1 == s2
+ */
+
+cString *cstring_clone(const cString *src);
+
+/**
  * @brief Memory deallocator for cString object.
  *
  * @param obj  The cString. Must not be NULL.
