@@ -19,6 +19,8 @@
     #define FORCE_INLINE inline
 #endif
 
+#define cstring_length(obj) cstring_size(obj)
+
 /**
  * @brief A dynamic heap-allocated string object.
  *
@@ -50,7 +52,7 @@ typedef struct cString {
  *   // cString object created!!!
  *   // s->data == "Oguri"
  *   // s->len  == 5
- *   // s->cap  == 6 
+ *   // s->cap  == 16 
  */
 
 cString *cstring_init(const char *str);
@@ -84,22 +86,10 @@ void cstring_free(cString *obj);
  *   // cstring_size(s) == 5
  */
 
-size_t cstring_size(const cString *obj);
-
-/**
- * @brief Getter for cString->len.
- *
- * @param obj  The cString. Must not be NULL.
- *
- * @note Returns 0 on NULL input.
- * @note Identical to cstring_size(). Both exist for convenience.
- *
- * @example
- *   cString *s = cstring_init("Oguri");
- *   // cstring_length(s) == 5
- */
-
-size_t cstring_length(const cString *obj);
+FORCE_INLINE static size_t cstring_size(const cString *obj){
+    if(UNLIKELY(!obj)) return 0;
+    return obj->len;
+}
 
 /**
  * @brief Getter for cString->data[index].

@@ -26,16 +26,6 @@ void cstring_free(cString *obj){
     free(obj);
 }
 
-size_t cstring_size(const cString *obj){
-    if(UNLIKELY(!obj)) return 0;
-    return obj->len;
-}
-
-size_t cstring_length(const cString *obj){
-    if(UNLIKELY(!obj)) return 0;
-    return obj->len;
-}
-
 char cstring_at(const cString *obj, size_t idx){
     if(UNLIKELY(!obj || !(idx < obj->len))) return '\0';
     return obj->data[idx];
