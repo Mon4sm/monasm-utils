@@ -272,4 +272,19 @@ void cstring_pop_back(cString *obj, size_t n);
 
 void cstring_pop_front(cString *obj, size_t n);
 
+/**
+ * @brief Remove n elements from a specific position.
+ *
+ * @param obj  The cString to remove. Must not be NULL.
+ * @param idx  The index position to erase from. 
+ * @param n    The number of elements to remove.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri Fat Cap");
+ *   cstring_erase(s, 5, 4);
+ *   // s->data == "Oguri Cap"
+ */
+
+char *cstring_erase(cString *obj, size_t idx, size_t n);
+
 #endif

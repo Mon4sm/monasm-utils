@@ -141,3 +141,18 @@ void cstring_pop_front(cString *obj, size_t n){
     memmove(obj->data, obj->data + n, obj->len - n + 1);
     obj->len -= n;
 }
+
+char *cstring_erase(cString *obj, size_t idx, size_t n){
+    if(UNLIKELY(!obj)) return NULL;
+    if(UNLIKELY(idx >= obj->len)) return obj->data + obj->len;
+    if(n > obj->len - idx){
+        obj->data[idx] = '\0';
+        obj->len = idx;
+        return obj->data + idx;
+    }
+    else{
+        memmove(obj->data + idx, obj->data + idx + n, obj->len - idx - n + 1);
+        obj->len -= n;
+        return obj->data + idx;
+    }
+}
