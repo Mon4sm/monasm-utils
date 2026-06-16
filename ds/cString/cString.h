@@ -175,6 +175,12 @@ FORCE_INLINE static int cstring_empty(cString *obj){
     return obj->len == 0 ? 1 : 0;
 }
 
+FORCE_INLINE static void cstring_clear(cString *obj){
+    if(UNLIKELY(!obj)) return;
+    obj->len = 0;
+    obj->data[0] = '\0';
+}
+
 /**
  * @brief Getter for cString->data[index].
  *
