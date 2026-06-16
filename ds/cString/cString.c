@@ -78,3 +78,30 @@ void cstring_push_front(cString *restrict obj, const char *restrict str){
     memcpy(obj->data, str, str_len);
     obj->len += str_len;
 }
+
+char *cstring_insert(cString *restrict obj, const char *restrict str, size_t idx){
+    if(UNLIKELY(!obj || !str)) return NULL;
+    if(UNLIKELY(idx > obj->len)) idx = obj->len;
+    if(str[0] == '\0') return obj->data + idx;
+    size_t str_len = strlen(str);
+    if(UNLIKELY(str_len > SIZE_MAX - obj->len - 1)) return NULL;
+    size_t target_cap = obj->len + str_len + 1;
+    if(UNLIKELY(target_cap > obj->cap)){
+        size_t new_cap = obj->cap < 16 ? 16 : obj->cap;
+        if(new_cap <= SIZE_MAX / 2){
+            new_cap <<= 1;
+        }
+        if(new_cap < target_cap){
+            new_cap = target_cap;
+        }
+        char *data = realloc(obj->data, new_cap);
+        if(UNLIKELY(!data)) return NULL;
+        obj->data = data;
+        obj->cap = new_cap;
+    }
+    memmove(obj->data + str_len + idx, obj->data + idx, obj->len - idx + 1);
+    memcpy(obj->data + idx, str, str_len);
+    obj->len += str_len;
+    return obj->data + idx;
+}
+

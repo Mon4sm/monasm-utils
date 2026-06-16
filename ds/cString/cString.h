@@ -124,7 +124,7 @@ char cstring_at(const cString *obj, size_t idx);
 void cstring_push_back(cString *restrict obj, const char *restrict str);
 
 /**
- * @brief Appends a char array to the front of a cString object.
+ * @brief Prepends a char array to a cString object.
  *
  * @param obj  The cString to append to. Must not be NULL.
  * @param str  The string to append. Must not be NULL.
@@ -139,5 +139,22 @@ void cstring_push_back(cString *restrict obj, const char *restrict str);
  */
 
 void cstring_push_front(cString *restrict obj, const char *restrict str);
+
+/**
+ * @brief Inserts a char array into a cString object at a given index.
+ *
+ * @param obj  The cString to append to. Must not be NULL.
+ * @param str  The string to append. Must not be NULL.
+ * @param idx  The index position to insert.
+ *
+ * @note Returns the pointer of the inserted position.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri Cap");
+ *   cstring_insert(s, "Fat ", 6);
+ *   // s->data == "Oguri Fat Cap"
+ */
+
+char *cstring_insert(cString *restrict obj, const char *restrict str, size_t idx);
 
 #endif
