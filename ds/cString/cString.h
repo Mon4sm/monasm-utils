@@ -188,7 +188,10 @@ FORCE_INLINE static int cstring_empty(cString *obj){
  *   // cstring_at(s, 2) == 'u'
  */
 
-char cstring_at(const cString *obj, size_t idx);
+FORCE_INLINE static char cstring_at(const cString *obj, size_t idx){
+    if(UNLIKELY(!obj || !(idx < obj->len))) return '\0';
+    return obj->data[idx];
+}
 
 /**
  * @brief Appends a char array to the end of a cString object.
@@ -240,5 +243,33 @@ void cstring_push_front(cString *restrict obj, const char *restrict str);
  */
 
 char *cstring_insert(cString *restrict obj, const char *restrict str, size_t idx);
+
+/**
+ * @brief Remove n elements from the back.
+ *
+ * @param obj  The cString to remove. Must not be NULL.
+ * @param n    The number of elements to remove.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri Cap");
+ *   cstring_pop_back(s, 4);
+ *   // s->data == "Oguri"
+ */
+
+void cstring_pop_back(cString *obj, size_t n);
+
+/**
+ * @brief Remove n elements from the front.
+ *
+ * @param obj  The cString to remove. Must not be NULL.
+ * @param n    The number of elements to remove.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri Cap");
+ *   cstring_pop_front(s, 6);
+ *   // s->data == "Cap"
+ */
+
+void cstring_pop_front(cString *obj, size_t n);
 
 #endif

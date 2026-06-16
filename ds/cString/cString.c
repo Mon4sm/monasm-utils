@@ -54,12 +54,7 @@ void cstring_free(cString *obj){
     free(obj);
 }
 
-char cstring_at(const cString *obj, size_t idx){
-    if(UNLIKELY(!obj || !(idx < obj->len))) return '\0';
-    return obj->data[idx];
-}
-
-void cstring_push_back(cString *restrict obj, const char *restrict str) {
+void cstring_push_back(cString *restrict obj, const char *restrict str){
     if(UNLIKELY(!obj || !str)) return;
     if(UNLIKELY(str[0] == '\0')) return;
     size_t str_len = strlen(str);
@@ -133,3 +128,16 @@ char *cstring_insert(cString *restrict obj, const char *restrict str, size_t idx
     return obj->data + idx;
 }
 
+void cstring_pop_back(cString *obj, size_t n){
+    if(UNLIKELY(!obj)) return;
+    if(n > obj->len) n = obj->len;
+    obj->data[obj->len - n] = '\0';
+    obj->len -= n;    
+}
+
+void cstring_pop_front(cString *obj, size_t n){
+    if(UNLIKELY(!obj)) return;
+    if(n > obj->len) n = obj->len;
+    memmove(obj->data, obj->data + n, obj->len - n + 1);
+    obj->len -= n;
+}
