@@ -175,6 +175,20 @@ FORCE_INLINE static int cstring_empty(cString *obj){
     return obj->len == 0 ? 1 : 0;
 }
 
+/**
+ * @brief Clears cString buffer
+ *
+ * @param obj  The cString. Must not be NULL.
+ *
+ * @note Silently returns on NULL input.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri");
+ *   cstring_clear(s);
+ *   // s->len == 0
+ *   // *(s->data) == '\0'
+ */
+
 FORCE_INLINE static void cstring_clear(cString *obj){
     if(UNLIKELY(!obj)) return;
     obj->len = 0;
