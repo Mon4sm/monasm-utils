@@ -339,4 +339,21 @@ int cstring_compare(const cString *restrict a, const cString *restrict b);
 
 int cstring_equals(const cString *restrict a, const cString *restrict b);
 
+/**
+ * @brief Fit allocated memory to string length
+ *
+ * @param obj  The cString. Must not be NULL.
+ *
+ * @note Silently returns on NULL input.
+ * @note Use when array will not be changed any further for maximum efficiency.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri");
+ *   cstring_push_back(s, " Cap is so fat");
+ *   cstring_fit(s);
+ *   // s->cap == 20 instead of 32
+ */
+
+void cstring_fit(cString *obj);
+
 #endif

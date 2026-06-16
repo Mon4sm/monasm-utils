@@ -165,3 +165,11 @@ int cstring_equals(const cString *restrict a, const cString *restrict b){
     if(UNLIKELY(!a || !b)) return 0;
     return a->len == b->len && !strcmp(a->data, b->data);
 }
+
+void cstring_fit(cString *obj){
+    if(UNLIKELY(!obj)) return;
+    char *new_data = realloc(obj->data, obj->len+1);
+    if(UNLIKELY(!new_data)) return;
+    obj->data = new_data;
+    obj->cap = obj->len+1;
+}
