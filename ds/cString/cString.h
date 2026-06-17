@@ -3,6 +3,10 @@
 
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if defined(__GNUC__) || defined(__clang__)
     #define LIKELY(x) __builtin_expect(!!(x), 1)
     #define UNLIKELY(x) __builtin_expect(!!(x), 0)
@@ -17,6 +21,16 @@
     #define FORCE_INLINE inline __attribute__((always_inline))
 #else
     #define FORCE_INLINE inline
+#endif
+
+#if defined(__cplusplus)
+    #if defined(_MSC_VER)
+        #define restrict __restrict
+    #elif defined(__GNUC__) || defined(__clang__)
+        #define restrict __restrict__
+    #else
+        #define restrict
+    #endif
 #endif
 
 #define cstring_length(obj) cstring_size(obj)
@@ -355,5 +369,9 @@ int cstring_equals(const cString *restrict a, const cString *restrict b);
  */
 
 void cstring_fit(cString *obj);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
