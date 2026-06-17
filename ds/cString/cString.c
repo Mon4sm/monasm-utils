@@ -173,3 +173,20 @@ void cstring_fit(cString *obj){
     obj->data = new_data;
     obj->cap = obj->len+1;
 }
+
+char *cstring_find(const cString *restrict obj, const char *restrict str){
+    if(UNLIKELY(!obj || !str)) return NULL;
+    return strstr(obj->data, str);
+}
+
+size_t cstring_count(const cString *restrict obj, const char *restrict str){
+    if(UNLIKELY(!obj || !str)) return 0;
+    size_t size = strlen(str), count = 0;
+    char *ptr = obj->data;
+    if(UNLIKELY(size == 0)) return 0;
+    while((ptr = strstr(ptr, str)) != NULL){
+        count++;
+        ptr += size;
+    }
+    return count;
+}

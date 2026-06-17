@@ -370,6 +370,38 @@ int cstring_equals(const cString *restrict a, const cString *restrict b);
 
 void cstring_fit(cString *obj);
 
+/**
+ * @brief Finds the first occurrence of a substring in a cString object.
+ *
+ * @param obj  The cString to search in. Must not be NULL.
+ * @param str  The substring to search for. Must not be NULL.
+ *
+ * @note Returns NULL on NULL input or if substring is not found.
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri Cap");
+ *   char *p = cstring_find(s, "Cap");
+ *   // p == s->data + 6
+ */
+
+char *cstring_find(const cString *restrict obj, const char *restrict str);
+
+/**
+ * @brief Counts non-overlapping occurrences of a substring in a cString object.
+ *
+ * @param obj  The cString to search in. Must not be NULL.
+ * @param str  The substring to count. Must not be NULL.
+ *
+ * @note Returns 0 on NULL input or empty substring.
+ * @note "Non-overlapping"
+ *
+ * @example
+ *   cString *s = cstring_init("Oguri Cap Oguri");
+ *   // cstring_count(s, "Oguri") == 2
+ */
+
+size_t cstring_count(const cString *restrict obj, const char *restrict str);
+
 #ifdef __cplusplus
 }
 #endif
