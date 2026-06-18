@@ -311,12 +311,21 @@ void cstring_pop_front(cString *obj, size_t n);
  *
  * @param obj  The cString to remove. Must not be NULL.
  * @param idx  The index position to erase from. 
- * @param n    The number of elements to remove.
+ * @param n    The number of elements to remove. If n exceeds the number of
+ *             elements remaining from idx to the end, it is clamped: every
+ *             character from idx onward is removed.
+ *
+ * @note If idx >= cstring_size(obj), this is a no-op and returns the end
+ *       pointer (obj->data + obj->len).
  *
  * @example
  *   cString *s = cstring_init("Oguri Fat Cap");
  *   cstring_erase(s, 5, 4);
  *   // s->data == "Oguri Cap"
+ *
+ *   cString *s2 = cstring_init("Oguri Cap");
+ *   cstring_erase(s2, 5, 999);
+ *   // s2->data == "Oguri"
  */
 
 char *cstring_erase(cString *obj, size_t idx, size_t n);
@@ -327,12 +336,15 @@ char *cstring_erase(cString *obj, size_t idx, size_t n);
  * @param a  First cString. Must not be NULL.
  * @param b  Second cString. Must not be NULL.
  *
- * @note NULL input(s) are undefined.
+ * @note Returns 0 on equal, -1 on a < b, 1 on a > b (lexicographically)
+ * @note NULL input(s) are undefined behavior (unchecked precondition).
  *
  * @example
  *   cString *a = cstring_init("Oguri");
  *   cString *b = cstring_init("Cap");
- *   // cstring_compare(a, b) > 0
+ *   cString *c = cstring_init("Oguri");
+ *   // cstring_compare(a, b) == 1
+ *   // cstring_compare(a, c) == 0
  */
 
 int cstring_compare(const cString *restrict a, const cString *restrict b);
@@ -343,7 +355,8 @@ int cstring_compare(const cString *restrict a, const cString *restrict b);
  * @param a  First cString. Must not be NULL.
  * @param b  Second cString. Must not be NULL.
  *
- * @note Returns 0 on NULL input.
+ * @note Returns 1 on equal, else returns 0
+ * @note NULL input(s) are undefined behavior (unchecked precondition).
  *
  * @example
  *   cString *a = cstring_init("Oguri");
