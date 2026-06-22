@@ -168,3 +168,65 @@ size_t cstring_count(const cString *restrict obj, const char *restrict str){
     }
     return count;
 }
+
+size_t cstring_replace(cString *restrict obj, const char *restrict target, const char *restrict str){
+    if(UNLIKELY(!obj || !target || !str)) return 0;
+    size_t target_len = strlen(target);
+    if(UNLIKELY(!target_len)) return 0;
+    size_t str_len = strlen(str);
+    char *first = strstr(obj->data, target);
+    if(!first) return 0;
+    if(str_len <= target_len){
+        size_t count = 0;
+        char *read = first;
+        char *write = first;
+        char *end = obj->data + obj->len;
+        char *match = first;
+        do{
+            size_t gap = (size_t)(match - read);
+            if(write != read) memmove(write, read, gap);
+            write += gap;
+            memcpy(write, str, str_len);
+            write += str_len;
+            read = match + target_len;
+            count++;
+        } while((match = strstr(read, target)) != NULL);
+        if(write != read) memmove(write, read, (size_t)(end - read) + 1);
+        obj->len -= count * (target_len - str_len);
+        return count;
+    }
+    else{
+        size_t count = 1;
+        char *scan = first + target_len;
+        char *match;
+        while((match = strstr(scan, target)) != NULL){
+            count++;
+            scan = match + target_len;
+        }
+        size_t grow = str_len - target_len;
+        if(UNLIKELY(count > (SIZE_MAX - obj->len) / grow)) return 0;
+        size_t new_len = obj->len + count * grow;
+        if(UNLIKELY(new_len > SIZE_MAX - 1)) return 0;
+        char *new_data = malloc(new_len + 1);
+        if(UNLIKELY(!new_data)) return 0;
+        char *write = new_data;
+        char *read = obj->data;
+        match = first;
+        do{
+            size_t gap = (size_t)(match - read);
+            memcpy(write, read, gap);
+            write += gap;
+            memcpy(write, str, str_len);
+            write += str_len;
+            read = match + target_len;
+        } while((match = strstr(read, target)) != NULL);
+        memcpy(write, read, (size_t)(obj->data + obj->len - read));
+        write += (size_t)(obj->data + obj->len - read);
+        *write = '\0';
+        free(obj->data);
+        obj->data = new_data;
+        obj->len = new_len;
+        obj->cap = new_len + 1;
+        return count;
+    }
+}

@@ -415,6 +415,24 @@ char *cstring_find(const cString *restrict obj, const char *restrict str);
 
 size_t cstring_count(const cString *restrict obj, const char *restrict str);
 
+/**
+ * @brief Replaces all non-overlapping occurrences of a substring.
+ *
+ * @param obj     The cString to modify. Must not be NULL.
+ * @param target  The substring to search for. Must not be NULL or empty.
+ * @param str     The replacement string. Must not be NULL.
+ *
+ * @note Returns 0 on NULL input, empty target, or if no occurrences were found.
+ * @note "Non-overlapping", matched left to right.
+ *
+ * @example
+ *   cString *s = cstring_init("Hi, I love {name}!!! {name} is very fat!!!");
+ *   cstring_replace(s, "{name}", "Oguri Cap");
+ *   // s->data == "Hi, I love Oguri Cap!!! Oguri Cap is very fat!!!"
+ */
+
+size_t cstring_replace(cString *restrict obj, const char *restrict target, const char *restrict str);
+
 #ifdef __cplusplus
 }
 #endif
